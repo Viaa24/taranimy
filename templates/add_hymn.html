@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>إضافة ترنيمة</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="form-container">
+    <h1>إضافة ترنيمة جديدة</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="section-card">
+            <h3 class="section-title">اسم الترنيمة:</h3>
+            <input type="text" name="title" placeholder="اسم الترنيمة" required>
+            <br>
+            <br>
+        </div>
+        <div class="section-card">
+            <h3 class="section-title">تصنيف الترنيمة:</h3>
+            <select id="category" name="category" required>
+                <option value="">اختر التصنيف</option>
+                <option value="رأس السنة">رأس السنة</option>
+                <option value="الميلاد">الميلاد</option>
+                <option value="الصوم الكبير">الصوم الكبير</option>
+                <option value="اسبوع الآلام">اسبوع الآلام</option>
+                <option value="القيامة">القيامة</option>
+                <option value="العذراء">العذراء</option>
+                <option value="النيروز">النيروز</option>
+                <option value="أخرى">أخرى</option>
+            </select>
+            <div id="other-category-box" style="display: none;">
+                <br>
+                <input type="text" id="other-category" name="" placeholder="اكتب التصنيف هنا">
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="section-card">
+            <h3 class="section-title">ملف الترنيمة:</h3>
+            <input type="file" id="audio" name="audio" accept=".mp3" required>
+        </div>
+        <br>
+        <br>
+        <div class="section-card">
+            <div class="lyrics-section">
+                <h3 class="section-title">كلمات الترنيمة:</h3>
+                <div class="lyrics-options">
+                    <div class="lyrics-buttons">
+                        <button type="button" id="pasteBtn">الصق الكلمات</button>
+                        <button type="button" id="fileBtn">اختر ملف txt</button>
+                    </div>
+                    <div id="pasteBox">
+                        <label for="lyrics">الصق كلمات الترنيمة هنا:</label>
+                        <textarea id="lyrics" name="lyrics" rows="7" placeholder="الصق كلمات الترنيمة هنا"></textarea>
+                    </div>
+                    <div id="fileBox" style="display: none;">
+                        <label for="lyrics_file">اختر ملف txt:</label>
+                        <input type="file" id="lyrics_file" name="lyrics_file" accept=".txt">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="main-btn">إضافة الترنيمة</button>
+    </form>
+    <script>
+    const pasteBtn = document.getElementById("pasteBtn");
+    const fileBtn = document.getElementById("fileBtn");
+    const pasteBox = document.getElementById("pasteBox");
+    const fileBox = document.getElementById("fileBox");
+    const lyricsFile = document.getElementById("lyrics_file");
+    const lyricsBox = document.getElementById("lyrics");
+
+    const category = document.getElementById("category");
+    const otherCategoryBox = document.getElementById("other-category-box");
+    const otherCategory = document.getElementById("other-category");
+
+    pasteBtn.onclick = function () {
+        pasteBox.style.display = "block";
+        fileBox.style.display = "none";
+    };
+
+    fileBtn.onclick = function () {
+        pasteBox.style.display = "none";
+        fileBox.style.display = "block";
+    };
+
+    lyricsFile.onchange = function () {
+        const file = lyricsFile.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                lyricsBox.value = e.target.result;
+            };
+            reader.readAsText(file, "UTF-8");
+        }
+    };
+
+    function updateCategory() {
+        if (category.value === "أخرى") {
+            otherCategoryBox.style.display = "block";
+            otherCategory.name = "category";
+            category.name = "";
+        } else {
+            otherCategoryBox.style.display = "none";
+            otherCategory.name = "";
+            category.name = "category";
+        }
+    }
+
+    category.addEventListener("change", updateCategory);
+    updateCategory();
+    </script>
+    <footer>
+        <h3>ترانيمي</h3>
+        <p>جميع الحقوق محفوظة 2026 &copy;</p>
+    </footer>
+</body>
+</html>

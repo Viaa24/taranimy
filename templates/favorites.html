@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>ترانيمي</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="success-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <nav>
+        <h2>ترانيمي</h2>
+        <ul>
+            <li><a href="/">الرئيسية</a></li>
+            <li><a href="#songs">الترانيم</a></li>
+            <li><a href="/favorites">المفضلة</a></li>
+            <li><a href="/today">ترنيمة اليوم</a></li>
+            <li><a href="/contact">تواصل معنا</a></li>
+        </ul>
+    </nav>
+    <section class="hero">
+        <h1>موقع الترانيم الارثوذكسية</h1> 
+        <p>
+           !استمتع بالترانيم الجميلة، واحفظها في مكان واحد
+        </p>
+        <a href="/add" class="main-btn">
+            اضف ترنيمة جديدة
+        </a>
+    </section>
+    <section class="songs" id="songs">
+        <h2>الترانيم المفضلة</h2>
+        <form method="GET" class="search-form">
+            <input type="text" name="search" class="search-box" placeholder="ابحث عن ترنيمة" value="{{ search }}">
+            <button type="submit">بحث</button>
+        </form>
+        {% for hymn in hymns %}
+            <div class="card">
+                <h3>{{ hymn[1] }}</h3>
+                <p class="category">
+                    التصنيف: {{ hymn[2] }}
+                </p>
+                <div class="actions">
+                    <a href="/listen/{{ hymn[0] }}" class="listen-btn">
+                        <button type="button">
+                            استمع الان ▶️
+                        </button>
+                    </a>
+                    <a href="/edit/{{ hymn[0] }}">
+                        <button type="button">
+                            تعديل ✏️
+                        </button>
+                    </a>
+                    <form action="/favorite/{{ hymn[0] }}" method="POST" style="display:inline;" onsubmit="savePosition()">
+                        <input type="hidden" name="next" value="/?reset_scroll=1">
+                        <button type="submit" class="fav-btn">
+                            {% if hymn[5] == 1 %}
+                                مضاف للمفضلة ❤️  
+                            {% else %}
+                                إضافة للمفضلة 🤍
+                            {% endif %}
+                        </button>
+                    </form>
+                    <form action="/delete/{{ hymn[0] }}" method="POST" style="display: inline;" onsubmit="savePosition()">
+                        <input type="hidden" name="next" value="{{ request.full_path }}">
+                        <button class="delete-btn" type="submit" onclick="return confirm('هل انت متاكد من حذف هذه الترنيمة؟')">
+                            حذف 🗑️
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}  
+    </section>
+    <div style="text-align:center; margin-top:30px;">
+        <a href="/">
+            <button>العودة للرئيسية</button>
+        </a>
+    </div>
+    <footer>
+        <h3>ترانيمي</h3>
+        <p>جميع الحقوق محفوظة 2026 &copy;</p>
+    </footer>
+    <script>
+    function savePosition() {
+        sessionStorage.setItem("scrollPosition", window.scrollY);
+    }
+    window.addEventListener("load", function () {
+        let position = sessionStorage.getItem("scrollPosition");
+        if (position) {
+            window.scrollTo(0, position);
+            sessionStorage.removeItem("scrollPosition");
+        }
+    });
+    </script>
+</body>
+</html>
