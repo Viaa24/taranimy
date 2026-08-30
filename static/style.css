@@ -115,7 +115,10 @@ textarea {
     display: block;
     margin: 10px auto;
 }
-button {
+/* الزرار الأساسي، وباقي أنواع الأزرار (حذف/مفضلة) بترث نفس الشكل ولها حالة hover خاصة بيها */
+button,
+.delete-btn,
+.fav-btn {
     padding: 14px 27px;
     font-size: 20px;
     border: none;
@@ -127,21 +130,10 @@ button {
     transition: 0.3s;
     margin: 9px;
 }
-button:hover {
+button:hover,
+.delete-btn:hover {
     transform: translateY(-2px);
     background: #ffd84d;
-}
-.delete-btn {
-    padding: 14px 27px;
-    font-size: 20px;
-    border: none;
-    border-radius: 12px;
-    background: gold;
-    color: #1b2a5a;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-    margin: 9px;
 }
 form {
     margin: 20px 0;
@@ -345,18 +337,6 @@ label {
     border-radius: 10px;
     text-align: center;
     font-size: 18px;
-}
-.fav-btn {
-    padding: 14px 27px;
-    font-size: 20px;
-    border: none;
-    border-radius: 12px;
-    background: gold;
-    color: #1b2a5a;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-    margin: 9px;
 }
 .fav-btn:hover {
     transform: scale(1.1);
